@@ -1,0 +1,38 @@
+{
+  "name": "fiap-hackathon-ms-email",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx tsc && npx tsc-alias -p tsconfig.json",
+    "dev": "sls offline",
+    "deploy": "sls deploy"
+  },
+  "engines": {
+    "node": "20.x",
+    "npm": "please-use-yarn",
+    "yarn": ">= 1.19.1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.136",
+    "@types/nodemailer": "^6.4.14",
+    "@types/uuid": "^9.0.8",
+    "serverless": "^3.38.0",
+    "serverless-offline": "^13.3.3",
+    "serverless-plugin-typescript": "^2.1.5",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "^5.4.2"
+  },
+  "dependencies": {
+    "@aws-sdk/client-sqs": "^3.536.0",
+    "aws-lambda": "^1.0.7",
+    "dotenv": "^16.4.5",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "nodemailer": "^6.9.13",
+    "uuid": "^9.0.1"
+  }
+}
