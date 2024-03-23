@@ -7,7 +7,7 @@ custom:
   serverless-offline:
     httpPort: 3001
   # API_GATEWAY_API_ID: ${ssm:/fiap-tech/api_gateway/api_id}
-  # SQS_NOTIFICATION: ${ssm:/fiap-tech/sqs/arn}
+  SQS_NOTIFICATION: ${ssm:/fiap-tech/sqs/arn}
   ETHEREAL_MAIL_USER: ${ssm:/fiap-tech/lambda/mailuser}
   ETHEREAL_MAIL_PASSW: ${ssm:/fiap-tech/lambda/mailpassw}
 
@@ -27,14 +27,14 @@ provider:
   environment:
     ETHEREAL_MAIL_USER: ${self:custom.ETHEREAL_MAIL_USER}
     ETHEREAL_MAIL_PASSW: ${self:custom.ETHEREAL_MAIL_PASSW}
-    # SQS_NOTIFICATION: ${self:custom.SQS_NOTIFICATION}
+    SQS_NOTIFICATION: ${self:custom.SQS_NOTIFICATION}
 
 resources:
   Resources:
     NotificationQueue:
       Type: AWS::SQS::Queue
       Properties:
-        QueueName: notification_queue
+        QueueName: ${env:SQS_NOTIFICATION}
         SqsManagedSseEnabled: false
 
 functions:
