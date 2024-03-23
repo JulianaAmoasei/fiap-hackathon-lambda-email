@@ -10,6 +10,7 @@ custom:
   SQS_NOTIFICATION: ${ssm:/fiap-tech/sqs/arn}
   ETHEREAL_MAIL_USER: ${ssm:/fiap-tech/lambda/mailuser}
   ETHEREAL_MAIL_PASSW: ${ssm:/fiap-tech/lambda/mailpassw}
+  LAB_ROLE: ${ssm:/fiap-tech/lab_role}
 
 provider:
   name: aws
@@ -17,36 +18,24 @@ provider:
   timeout: 30
   stage: dev
   iam:
-    role:
-      statements:
-        - Effect: Allow
-          Action: 
-            - sqs:*
-          Resource: 
-            Fn::GetAtt: [NotificationQueue, Arn]
+    role: ${self:custom.LAB_ROLE}
   environment:
     ETHEREAL_MAIL_USER: ${self:custom.ETHEREAL_MAIL_USER}
     ETHEREAL_MAIL_PASSW: ${self:custom.ETHEREAL_MAIL_PASSW}
-    SQS_NOTIFICATION: ${self:custom.SQS_NOTIFICATION}
 
-resources:
-  Resources:
-    NotificationQueue:
-      Type: AWS::SQS::Queue
-      Properties:
-        QueueName: ${env:SQS_NOTIFICATION}
-        SqsManagedSseEnabled: false
+# resources:
+#   Resources:
+#     NotificationQueue:
+#       Type: AWS::SQS::Queue
+#       Properties:
+#         QueueName: ${env:SQS_NOTIFICATION}
+#         SqsManagedSseEnabled: false
 
 functions:
   sendReport:
     handler: src/functions/sendReport.handler
     events:	
-      - sqs:
-          arn:
-            Fn::GetAtt:
-              - NotificationQueue
-              - Arn
-          batchSize: 1
+      - sqs: ${ssm:/fiap-tech/sqs/arn}
 
 package:
   excludeDevDependencies: true
